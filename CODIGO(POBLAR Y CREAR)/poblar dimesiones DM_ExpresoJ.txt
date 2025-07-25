@@ -1,0 +1,54 @@
+USE DM_ExpresoJF;
+GO
+
+-- ==========================================
+-- 1. Poblar Dimensión Bus
+-- ==========================================
+INSERT INTO dim_bus (id_bus, placa, marca, modelo, anio_fabricacion)
+SELECT 
+    id_bus, 
+    placa, 
+    marca, 
+    modelo, 
+    anio_fabricacion
+FROM ExpresoJF.dbo.Bus;
+GO
+
+-- ==========================================
+-- 2. Poblar Dimensión Tipo de Mantenimiento
+-- ==========================================
+INSERT INTO dim_tipo_mantenimiento (tipo_mantenimiento_id, codigo_tipo, nombre, categoria, prioridad)
+SELECT 
+    id_tipo, 
+    codigo_tipo, 
+    nombre, 
+    categoria, 
+    prioridad
+FROM ExpresoJF.dbo.TipoMantenimiento;
+GO
+
+-- ==========================================
+-- 3. Poblar Dimensión Proveedor
+-- ==========================================
+INSERT INTO dim_proveedor (proveedor_id, razon_social, especialidad, evaluacion)
+SELECT 
+    id_proveedor, 
+    razon_social, 
+    especialidad, 
+    evaluacion_proveedor
+FROM ExpresoJF.dbo.Proveedor;
+GO
+
+-- ==========================================
+-- 4. Poblar Dimensión Fecha
+-- ==========================================
+INSERT INTO dim_fecha (fecha_id, fecha, dia, mes, trimestre, anio)
+SELECT DISTINCT 
+    CONVERT(INT, FORMAT(fecha_inicio, 'yyyyMMdd')) AS fecha_id,
+    CAST(fecha_inicio AS DATE),
+    DAY(fecha_inicio),
+    MONTH(fecha_inicio),
+    DATEPART(QUARTER, fecha_inicio),
+    YEAR(fecha_inicio)
+FROM ExpresoJF.dbo.Mantenimiento;
+GO

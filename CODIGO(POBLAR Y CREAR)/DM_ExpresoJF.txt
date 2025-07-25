@@ -1,0 +1,71 @@
+-- Crear la base de datos
+CREATE DATABASE DM_ExpresoJF;
+GO
+USE DM_ExpresoJF;
+GO
+
+-- 1. Dimensión Bus (Vehículo)
+CREATE TABLE dim_bus (
+    id_dim_bus INT IDENTITY(1,1) PRIMARY KEY,
+    id_bus INT, -- ID original del sistema operacional
+    placa VARCHAR(10),
+    marca VARCHAR(50),
+    modelo VARCHAR(50),
+    anio_fabricacion INT
+);
+GO
+
+-- 2. Dimensión Tipo de Mantenimiento
+CREATE TABLE dim_tipo_mantenimiento (
+    id_dim_mant INT IDENTITY(1,1) PRIMARY KEY,
+    tipo_mantenimiento_id INT, -- ID original del sistema operacional
+    codigo_tipo VARCHAR(20),
+    nombre VARCHAR(100),
+    categoria VARCHAR(50),
+    prioridad VARCHAR(10)
+);
+GO
+
+-- 3. Dimensión Proveedor
+CREATE TABLE dim_proveedor (
+    id_dim_prov INT IDENTITY(1,1) PRIMARY KEY,
+    proveedor_id INT, -- ID original del sistema operacional
+    razon_social VARCHAR(100),
+    especialidad VARCHAR(100),
+    evaluacion DECIMAL(3,2)
+);
+GO
+
+-- 4. Dimensión Fecha
+CREATE TABLE dim_fecha (
+    id_dim_fech INT IDENTITY(1,1) PRIMARY KEY,
+    fecha_id INT, -- Código tipo YYYYMMDD (opcional)
+    fecha DATE NOT NULL,
+    dia TINYINT,
+    mes TINYINT,
+    trimestre TINYINT,
+    anio SMALLINT
+);
+GO
+
+-- 5. Tabla de Hechos: Mantenimiento
+CREATE TABLE th_mantenimiento (
+    mantenimiento_id INT PRIMARY KEY, -- ID del sistema operacional
+    id_dim_bus INT,
+    id_dim_mant INT,
+    id_dim_prov INT,
+    id_dim_fech INT,
+
+    -- Métricas clave para BI
+    costo_total DECIMAL(10,2),
+    horas_invertidas DECIMAL(5,2),
+    cantidad_items INT,
+    cantidad_repuestos INT,
+
+    -- Relaciones con dimensiones
+    FOREIGN KEY (id_dim_bus) REFERENCES dim_bus(id_dim_bus),
+    FOREIGN KEY (id_dim_mant) REFERENCES dim_tipo_mantenimiento(id_dim_mant),
+    FOREIGN KEY (id_dim_prov) REFERENCES dim_proveedor(id_dim_prov),
+    FOREIGN KEY (id_dim_fech) REFERENCES dim_fecha(id_dim_fech)
+);
+GO

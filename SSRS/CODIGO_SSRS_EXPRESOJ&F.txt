@@ -1,0 +1,268 @@
+AUTOS SIN MANTENIMIENTO PREVENTIVO
+
+CONJUNTO DE DATOS:
+-QUE VEHICULOS HAN RECIBIDO MTENIMIENTO NO PREVENTIVOS
+
+SELECT 
+    b.placa,
+    b.marca,
+    b.modelo,
+    tm.nombre AS tipo_mantenimiento,
+    COUNT(*) AS cantidad
+FROM 
+    th_mantenimiento m
+JOIN dim_bus b ON m.bus_id = b.bus_id
+JOIN dim_tipo_mantenimiento tm ON m.tipo_mantenimiento_id = tm.tipo_mantenimiento_id
+WHERE 
+    tm.categoria <> 'Preventivo'
+GROUP BY 
+    b.placa, b.marca, b.modelo, tm.nombre
+ORDER BY 
+    b.placa;
+
+
+
+
+
+
+-2.2
+
+SELECT 
+    b.placa,
+    COUNT(*) AS cantidad_no_preventivos
+FROM 
+    th_mantenimiento m
+JOIN dim_bus b ON m.bus_id = b.bus_id
+JOIN dim_tipo_mantenimiento tm ON m.tipo_mantenimiento_id = tm.tipo_mantenimiento_id
+WHERE 
+    tm.categoria <> 'Preventivo'
+GROUP BY 
+    b.placa;
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------
+
+GASTO MENSUAL POR VEHICULO
+
+CONJUNTO DE DATOS:
+-TOTAL DE GASTOS MENSUALES EN MANTENIMIENTO
+
+
+SELECT 
+    f.anio,
+    f.mes,
+    DATENAME(MONTH, DATEFROMPARTS(f.anio, f.mes, 1)) + ' ' + CAST(f.anio AS VARCHAR) AS mes_nombre,
+    b.marca,
+    SUM(m.costo_total) AS total_gasto
+FROM 
+    th_mantenimiento m
+JOIN dim_bus b ON m.bus_id = b.bus_id
+JOIN dim_fecha f ON m.fecha_id = f.fecha_id
+GROUP BY 
+    f.anio, f.mes, b.marca
+ORDER BY 
+    f.anio, f.mes, b.marca;
+
+
+
+
+
+
+---------------------------------------------------------------------
+GASTO PROMEDIO POR PROVEEDOR
+
+CONJUNTO DE DATOS:
+-GASTO PROMEDIO EN MANTENIMIENTO POR CADA PROVEEDOR
+
+
+
+SELECT 
+    p.razon_social,
+    ROUND(AVG(m.costo_total), 2) AS gasto_promedio
+FROM 
+    th_mantenimiento m
+JOIN 
+    dim_proveedor p ON m.proveedor_id = p.proveedor_id
+GROUP BY 
+    p.razon_social
+ORDER BY 
+    gasto_promedio DESC;
+
+
+
+
+
+
+-TOTAL DE GASTOS MENSUALES EN MANTENIMIENTO
+
+SELECT 
+    f.anio,
+    f.mes,
+    DATENAME(MONTH, DATEFROMPARTS(f.anio, f.mes, 1)) + ' ' + CAST(f.anio AS VARCHAR) AS mes_nombre,
+    b.marca,
+    SUM(m.costo_total) AS total_gasto
+FROM 
+    th_mantenimiento m
+JOIN dim_bus b ON m.bus_id = b.bus_id
+JOIN dim_fecha f ON m.fecha_id = f.fecha_id
+GROUP BY 
+    f.anio, f.mes, b.marca
+ORDER BY 
+    f.anio, f.mes, b.marca;
+
+
+
+
+-QUE VEHICULOS HAN RECIBIDO MANTENIMIENTO NO PREVENTIVOS
+
+SELECT 
+    b.placa,
+    b.marca,
+    b.modelo,
+    tm.nombre AS tipo_mantenimiento,
+    COUNT(*) AS cantidad
+FROM 
+    th_mantenimiento m
+JOIN dim_bus b ON m.bus_id = b.bus_id
+JOIN dim_tipo_mantenimiento tm ON m.tipo_mantenimiento_id = tm.tipo_mantenimiento_id
+WHERE 
+    tm.categoria <> 'Preventivo'
+GROUP BY 
+    b.placa, b.marca, b.modelo, tm.nombre
+ORDER BY 
+    b.placa;
+
+
+
+-3.2
+
+SELECT 
+    p.razon_social,
+    AVG(m.costo_total) AS gasto_promedio
+FROM 
+    th_mantenimiento m
+JOIN 
+    dim_proveedor p ON m.proveedor_id = p.proveedor_id
+GROUP BY 
+    p.razon_social
+HAVING 
+    AVG(m.costo_total) > 200;  
+
+
+
+
+
+
+------------------------------------------------------------
+
+MARCAS CON MAS FALLAS MECANICAS
+
+CONJUNTO DE DATOS:
+-4.1
+
+SELECT 
+    b.marca,
+    COUNT(*) AS cantidad_fallas
+FROM 
+    th_mantenimiento m
+JOIN 
+    dim_tipo_mantenimiento t ON m.tipo_mantenimiento_id = t.tipo_mantenimiento_id
+JOIN 
+    dim_bus b ON m.bus_id = b.bus_id
+WHERE 
+    t.categoria = 'Correctivo'
+GROUP BY 
+    b.marca
+ORDER BY 
+    cantidad_fallas DESC;
+
+
+
+-4.2
+
+SELECT 
+    b.marca,
+    AVG(m.horas_invertidas) AS promedio_horas_correctivo
+FROM 
+    th_mantenimiento m
+JOIN 
+    dim_tipo_mantenimiento t ON m.tipo_mantenimiento_id = t.tipo_mantenimiento_id
+JOIN 
+    dim_bus b ON m.bus_id = b.bus_id
+WHERE 
+    t.categoria = 'Correctivo'
+GROUP BY 
+    b.marca
+ORDER BY 
+    promedio_horas_correctivo DESC;
+
+
+
+
+------------------------------------------------------------
+
+TENDENCIA MANTENIMIENTOS
+
+CONJUNTO DE DATOS:
+-5.1
+
+SELECT 
+    f.anio,
+    f.mes,
+    t.categoria AS tipo_mantenimiento,
+    COUNT(*) AS cantidad
+FROM 
+    th_mantenimiento m
+JOIN 
+    dim_tipo_mantenimiento t ON m.tipo_mantenimiento_id = t.tipo_mantenimiento_id
+JOIN 
+    dim_fecha f ON m.fecha_id = f.fecha_id
+WHERE 
+    f.anio = 2024
+    AND t.categoria IN ('Preventivo', 'Correctivo')
+GROUP BY 
+    f.anio, f.mes, t.categoria
+ORDER BY 
+    f.anio, f.mes, t.categoria;
+
+
+
+
+-DS.MANTENIMIETOS RESUMEN
+
+
+
+
+SELECT 
+    f.anio, 
+    f.mes, 
+    tm.nombre AS tipo_mantenimiento, 
+    COUNT(*) AS cantidad, 
+    SUM(m.costo_total) AS costo_total
+FROM 
+    th_mantenimiento m
+JOIN 
+    dim_fecha f ON m.fecha_id = f.fecha_id
+JOIN 
+    dim_tipo_mantenimiento tm ON m.tipo_mantenimiento_id = tm.tipo_mantenimiento_id
+GROUP BY 
+    f.anio, f.mes, tm.nombre
+ORDER BY 
+    f.anio, f.mes
+
+
+
+
+
+
+

@@ -1,0 +1,57 @@
+USE DM_ExpresoJF;
+GO
+
+INSERT INTO th_mantenimiento (
+  mantenimiento_id,
+  id_dim_bus,
+  id_dim_mant,
+  id_dim_prov,
+  id_dim_fech,
+  costo_total,
+  horas_invertidas,
+  cantidad_items,
+  cantidad_repuestos
+)
+SELECT
+  m.id_mantenimiento,
+
+  -- Relación con dimensión Bus
+  db.id_dim_bus,
+
+  -- Relación con dimensión Tipo de Mantenimiento
+  dtm.id_dim_mant,
+
+  -- Relación con dimensión Proveedor (puede ser NULL si no hay orden)
+  dp.id_dim_prov,
+
+  -- Relación con dimensión Fecha
+  df.id_dim_fech,
+
+  m.costo_total,
+  m.horas_invertidas,
+
+  -- Subconsulta para contar ítems ejecutados
+  (
+    SELECT COUNT(*) 
+    FROM ExpresoJF.dbo.DetalleMantenimiento dm 
+    WHERE dm.id_mantenimiento = m.id_mantenimiento
+  ) AS cantidad_items,
+
+  -- Subconsulta para contar repuestos usados
+  (
+    SELECT COUNT(*) 
+    FROM ExpresoJF.dbo.RepuestoUtilizado ru 
+    WHERE ru.id_mantenimiento = m.id_mantenimiento
+  ) AS cantidad_repuestos
+
+FROM ExpresoJF.dbo.Mantenimiento m
+
+-- Uniones con dimensiones
+JOIN dim_bus db ON db.id_bus = m.id_bus
+JOIN dim_tipo_mantenimiento dtm ON dtm.tipo_mantenimiento_id = m.id_tipo
+JOIN dim_fecha df ON df.fecha = CAST(m.fecha_inicio AS DATE)
+
+-- LEFT JOIN para proveedor (orden de compra)
+LEFT JOIN ExpresoJF.dbo.OrdenCompra oc ON oc.id_mantenimiento = m.id_mantenimiento
+LEFT JOIN dim_proveedor dp ON dp.proveedor_id = oc.id_proveedor;
+GO

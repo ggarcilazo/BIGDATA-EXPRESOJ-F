@@ -1,0 +1,82 @@
+﻿<DeploymentSnapshot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0">
+  <Target>
+    <Database>DM_ExpresoJF</Database>
+    <Server>LAPTOP-BMSMTUBO</Server>
+    <ConnectionString>Data Source=LAPTOP-BMSMTUBO;Timeout=0</ConnectionString>
+  </Target>
+  <Options>
+    <TransactionalDeployment>false</TransactionalDeployment>
+    <PartitionDeployment>DeployPartitions</PartitionDeployment>
+    <RoleDeployment>DeployRolesRetainMembers</RoleDeployment>
+    <ProcessingOption>Default</ProcessingOption>
+    <OutputScript></OutputScript>
+    <ImpactAnalysisFile></ImpactAnalysisFile>
+    <ConfigurationSettingsDeployment>Deploy</ConfigurationSettingsDeployment>
+    <OptimizationSettingsDeployment>Deploy</OptimizationSettingsDeployment>
+    <WriteBackTableCreation>UseExisting</WriteBackTableCreation>
+  </Options>
+  <Snapshot>
+    <ObjectSnapshots>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.RelationalDataSource</Type>
+        <TimeStamp>8QGd4rud67+8LILaObUGFVnc4QY=12/07/2025 20:31:4812/07/2025 20:27:20</TimeStamp>
+        <ID>
+          <String>DM Expreso JF</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.DataSourceView</Type>
+        <TimeStamp>/FlTDzkydJr3GuVaqON3dMtGfdU=9/07/2025 20:53:3812/07/2025 20:27:20</TimeStamp>
+        <ID>
+          <String>DM Expreso JF</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>2J8qoEy4BymbmHOMip0kDd7mbrc=9/07/2025 20:54:5612/07/2025 20:27:20</TimeStamp>
+        <ID>
+          <String>Dim Tipo Mantenimiento</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>OHhtoVeFtNVDfIUq9msKJj9YuAs=9/07/2025 20:55:0912/07/2025 20:27:20</TimeStamp>
+        <ID>
+          <String>Dim Bus</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>3bbmB6/PjljAuj7VlK7Fb+zI5b0=9/07/2025 20:55:2112/07/2025 20:27:20</TimeStamp>
+        <ID>
+          <String>Dim Proveedor</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>MXlKnACF6pmM+f2+eIAgkF0j+Vs=9/07/2025 20:55:3412/07/2025 20:27:20</TimeStamp>
+        <ID>
+          <String>Dim Fecha</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Cube</Type>
+        <TimeStamp>Uds7Z/xVV7yix6wvsBq+alvlZ0o=9/07/2025 20:55:4012/07/2025 20:27:20fNiF0H83fHiwmCx2GHbnXbFBm3Y=9/07/2025 20:53:5312/07/2025 20:27:20</TimeStamp>
+        <ID>
+          <String>DM Expreso JF</String>
+        </ID>
+      </ObjectSnapshot>
+    </ObjectSnapshots>
+    <DatabaseSnapshot>
+      <Type>Microsoft.AnalysisServices.Database</Type>
+      <TimeStamp>Vnqc6PfKBtuzXgk5SAWQaFlAUyY=9/07/2025 20:51:0812/07/2025 20:27:20</TimeStamp>
+      <ID>
+        <String>DM_ExpresoJF</String>
+      </ID>
+    </DatabaseSnapshot>
+    <Granularity>Coarse</Granularity>
+  </Snapshot>
+  <AssemblyLocations />
+  <ProcessingComplete>true</ProcessingComplete>
+  <LastDeployed>2025-07-14T20:18:17.943333Z</LastDeployed>
+</DeploymentSnapshot>
